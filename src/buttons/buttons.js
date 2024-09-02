@@ -11,12 +11,21 @@ const citiesButtons = Markup.inlineKeyboard([
 ])
   .oneTime()
   .resize();
+// const dynamicButtons = (districts) =>
+//   Markup.inlineKeyboard([
+//     ...districts.map((district) => [
+//       Markup.button.callback(String(district), String(district)),
+//     ]),
+//   ]);
 const dynamicButtons = (districts) =>
-  Markup.inlineKeyboard([
-    ...districts.map((district) => [
-      Markup.button.callback(String(district), String(district)),
-    ]),
-  ]);
+  Markup.inlineKeyboard(
+    districts.map((district) =>
+      Markup.button.callback(String(district), String(district))
+    )
+  );
+const contactsButton = Markup.inlineKeyboard("sd", [
+  Markup.button.url("Перейти", "t.me/ebaSolya_admin"),
+]);
 const backMenuButton = Markup.inlineKeyboard([
   [Markup.button.callback(localization.menu, localization.menu)],
   [
@@ -33,4 +42,9 @@ const backMenuButton = Markup.inlineKeyboard([
   ],
 ]);
 
-module.exports = { citiesButtons, dynamicButtons, backMenuButton };
+module.exports = {
+  citiesButtons,
+  dynamicButtons,
+  backMenuButton,
+  contactsButton,
+};

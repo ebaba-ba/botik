@@ -12,13 +12,15 @@ productsScene.enter(async (ctx) => {
   let products = await getProducts(ctx.session.myData.city, "products");
   console.log("🚀 ~ productsScene.enter ~ products:", products);
   if (products && products.length > 0) {
+    const buttons = dynamicButtons(products?.flat());
     ctx.session.myData.products = products;
-    await ctx.replyWithHTML(
+    await ctx.editMessageText(
       localization.labels.city +
         localization.cities[ctx.session.myData.city] +
         "\n\n➖ ➖ ➖ ➖ ➖ ➖ ➖ ➖ ➖ ➖ ➖ \n\n" +
         localization.selectProducts,
-      dynamicButtons(products?.flat())
+
+      { ...buttons, parse_mode: "HTML" }
     );
 
     await getProducts(ctx.session.myData.city);

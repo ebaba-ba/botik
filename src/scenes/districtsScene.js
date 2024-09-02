@@ -27,7 +27,8 @@ districtsScene.enter(async (ctx) => {
     ctx.session.myData.product
   );
   if (products && products.length > 0) {
-    await ctx.replyWithHTML(
+    const buttons = dynamicButtons(buttonProducts.map((button) => button));
+    await ctx.editMessageText(
       localization.labels.city +
         localization.cities[`${ctx.session.myData.city}`] +
         "\n" +
@@ -39,7 +40,7 @@ districtsScene.enter(async (ctx) => {
         " грн." +
         "\n\n➖ ➖ ➖ ➖ ➖ ➖ ➖ ➖ ➖ ➖ ➖ \n\n" +
         localization.selectDistricts,
-      dynamicButtons(buttonProducts.map((button) => button))
+      { ...buttons, parse_mode: "HTML" }
     );
   }
 });

@@ -1,8 +1,9 @@
 const { getDistricts } = require("../services/districtsApi");
-const { citiesButtons } = require("../buttons/buttons");
-const { Scenes } = require("telegraf");
+const { citiesButtons, contactsButton } = require("../buttons/buttons");
+const { Scenes, Markup } = require("telegraf");
 const { localization } = require("../localization/localization");
 const { startCitiesScene } = require("./command");
+const { getContacts } = require("../services/contactsApi");
 
 const launchScene = new Scenes.BaseScene("launch");
 
@@ -29,9 +30,13 @@ launchScene.enter((ctx) => {
     })
   );
 })();
-launchScene.action(localization.employment, (ctx) => {
-  ctx.replyWithHTML(localization.employmentInfo + "<a>@Fjhgi_bot</a>");
-  return ctx.sendContact("");
+launchScene.action(localization.employment, async (ctx) => {
+  const contacts = await getContacts();
+  console.log("🚀 ~ launchScene.action ~ contacts:", contacts);
+  ctx.replyWithHTML(
+    localization.questionFor,
+    Markup.inlineKeyboard([[Markup.button.url("👨‍💻 Admin", contacts[0].link)]])
+  );
 });
 launchScene.leave((ctx) => {
   ctx.session.myData.prevScene = "launch";

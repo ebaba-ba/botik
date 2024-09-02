@@ -65,14 +65,24 @@ reservationScene.action(localization.menu, async (ctx) => {
   await ctx.scene.leave();
   return ctx.scene.enter("launch");
 });
+
 reservationScene.action(localization.cancelPayment, async (ctx) => {
+  ctx.replyWithHTML(
+    localization.cancelPaymentQuestion,
+    dynamicButtons([localization.yes, localization.no])
+  );
+});
+
+reservationScene.action(localization.yes, async (ctx) => {
   await unReservedProduct(
     ctx.session.myData.product,
     ctx.session.myData.RECORDS_ID
   );
+  await ctx.replyWithHTML(localization.cancelPaynebtDone);
   await ctx.scene.leave();
   return ctx.scene.enter("launch");
 });
+
 reservationScene.action(localization.updateStatus, async (ctx) => {
   let status = "";
   while (status != "succes") {
